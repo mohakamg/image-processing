@@ -17,8 +17,8 @@ for i=1:length(unique_pixel_intensities)
    
    P_r(i) = length(unique_indeces{i})/pixel_count_total;
    %cummulative sum (
-   %img(unique_indeces{i}) = 255*sum(P_r(1:i));
-   img(unique_indeces{i}) = 255*sum(P_r(i));
+   img(unique_indeces{i}) = 255*sum(P_r(1:i));
+   %img(unique_indeces{i}) = 255*sum(P_r(i));
   % img(unique_indeces{i}) = round(sum(img(unique_indeces{i})));
 end
 
