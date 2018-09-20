@@ -35,10 +35,12 @@ figure
 %imshow([img, histeq(img), histeq(r)]);
 imshow([img, histeq(img)]);
 figure
-a = conv2(neg_map(256, histeq(img)),...
-    [-1 0 1; -2 0 2;1 0 1]');
-b = conv2(a,...
-    [-1 0 1; -2 0 2;1 0 1]);
+
+
+% a = conv2(neg_map(256, histeq(img)),...
+%     [-1 0 1; -2 0 2;1 0 1]');
+% b = conv2(a,...
+%     [-1 0 1; -2 0 2;1 0 1]);
 imshow(b)
 figure
 imshow(histeq(b))
