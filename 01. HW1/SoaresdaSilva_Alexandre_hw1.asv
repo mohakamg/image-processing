@@ -2,11 +2,11 @@
 close all
 clc, clear;
 L = 256;
-I_original = imread('Testimage1.tif');
+I_original = imread('Testimage3.tif');
 %mistake; this is not the average
 %int_filter = 1/9*[1 1 1 1 1 ; 1 1 1 1 1 ; 1 1 1 1 1];
-%% integration - blur
 int_filter = 1/25*[1 1 1 1 1 ; 1 1 1 1 1 ; 1 1 1 1 1];
+%% integration - blur
 I_blur = conv2(I_original,int_filter,'same');
 I_blur = uint8(I_blur);
 
@@ -22,32 +22,19 @@ I_blur(I_blur>=55)=255; %threshold to practially binarize the img
 
 %% remove spades / nums
 I_rem = remove_spades_numbers(I_blur);
-%% integration - blur
-int_filter = 1/9*[1 1 1; 1 1 1; 1 1 1];
-I_blur_rem = conv2(I_rem,int_filter,'same');
-I_blur_rem = conv2(I_blur_rem ,int_filter,'same');
-I_blur_rem = uint8(I_blur_rem);
 
 %% 1st derivative
-% x_1st_deriv = [0 1 0; 1 -4 1; 0 1 0];
-% y_1st_deriv = [-1 0 1; -2 0 2; -1 0 1];
-x_1st_deriv = [1 1; -1 -1];
-y_1st_deriv = [1 -1; 1 -1];
-I_1s_tder_x = conv2(I_blur_rem, x_1st_deriv ,'same');
-I_1s_tder_y = conv2(I_blur_rem, y_1st_deriv ,'same');
-%% 2nd derivative
-sec_deriv = [0 1 0; 1 -4 1; 0 1 0];
-I_sec_deriv = conv2(I_blur_rem, sec_deriv,'same');
-%I_sec_deriv = conv2(I_sec_deriv, sec_deriv,'same');
+x_1st_deriv = [1 2 1; 0 0 0; -1 -2 -1];
+y_1st_deriv = [-1 0 1; -2 0 2; -1 -2 -1];
+I_1s_tder_x = conv2(I_rem, x_1st_deriv ,'same');
+I_1s_tder_y = conv2(I_rem, y_1st_deriv ,'same');
 figure
-imshow([I_1s_tder_x, I_1s_tder_y, I_sec_deriv]);
+imshow([I_1s_tder_x, I_1s_tder_y]);
+
 %% display figs
 figure
-I_sec_deriv = contrast_enhancement(I_sec_deriv);
-I_sec_deriv(I_sec_deriv > 200) = 255;
-I_sec_deriv(I_sec_deriv <= 200) = 0;
 % imshow([I_original, I_blur, I_blur_contr_enhanced, I_bin]);
-imshow([I_original, I_blur, I_bin,I_rem, I_sec_deriv]);
+imshow([I_original, I_blur; I_bin,I_rem]);
 title('original VS blur 5x5 VS i blur constrast enhanced vs binarized');
 
 function I_rem = remove_spades_numbers(I)
